@@ -19,8 +19,9 @@ const solucionar = () => {
   ag=a; bg=b;cg=c;dg=d;
   
   probabilidad = parseFloat(a) + parseFloat(b) + parseFloat(c) + parseFloat(d);
-   console.log(probabilidad);
-  if (probabilidad == 1) {
+
+  console.log(probabilidad);
+  if (probabilidad<0.9999 || probabilidad>1) {
     Swal.fire({
       icon: "error",
       title: "Error",
@@ -29,7 +30,6 @@ const solucionar = () => {
     bandera = 1;
   }
   utilidad = a * x + b * y + c * 0 + d * z;
-//   console.log(utilidad);
 };
 
 const formulario = document.getElementById("sol");
@@ -39,15 +39,13 @@ formulario.addEventListener("submit", (event) => {
   event.preventDefault();
   solucionar();
   if (bandera === 0) {
-    
-    //const graph = document.querySelector(".grapScript");
+
     Swal.fire({
       icon: "success",
       title: "Resultados",
       html: `<p>La utilidad esperada con los datos ingresados es de: ${utilidad}$</p>
       <div id="columnchart_material" style="width: 800px; height: 500px; margin:50px;"></div>`,
     });
-    //graph.innerHTML = '';
     drawChart();
 
   }
@@ -55,12 +53,12 @@ formulario.addEventListener("submit", (event) => {
 
 
 function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-  ['Utilidad', 'Probabilidad'],
-  ['d', dg*100],
-  ['c', cg*100],
-  ['b', bg*100],
-  ['a', ag*100],
+  var data = new google.visualization.arrayToDataTable([
+      ['Utilidad', 'Prob..'],
+      [dg,dg*100],
+      [cg,cg*100],
+      [bg,bg*100],
+      [ag,ag*100],
   ]);
 
   var options = {
@@ -76,26 +74,3 @@ function drawChart() {
 
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
-
-/*function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-  ['Utilidad', 'Probabilidad', 'Prob. frecuentista (sim) __'],
-  ['d', dg*100, 15],
-  ['c', cg*100, 25],
-  ['b', bg*100, 35],
-  ['a', ag*100, 35],
-  ]);
-
-  var options = {
-  chart: {
-      title: 'Gráfica de las probabilidades',
-  },
-  vAxis: {
-      title: 'Probabilidad en %'
-    }
-  };
-
-  var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-  chart.draw(data, google.charts.Bar.convertOptions(options));
-}*/
